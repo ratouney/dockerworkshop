@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+    mongodb_container:
+        image: mongo:latest
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: rootpassword
+            MONGO_INITDB_DATABASE: test
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodb_data_container:/data/db
+        networks:
+            yolotron:
+                aliases: 
+                - mongodb_ip
+    
+    api_container:
+        build: back/.
+        ports:
+            - 3000:3000
+        depends_on: 
+            - mongodb_container
+        networks:
+            - yolotron
+            
+volumes:
+    mongodb_data_container:
+
+networks:
+    yolotron:
+        driver: bridge
