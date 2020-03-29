@@ -22,8 +22,20 @@ services:
         depends_on: 
             - mongodb_container
         networks:
-            - yolotron
+            yolotron:
+                aliases:
+                - api_ip
             
+    web_container:
+        build: front/.
+        environment: 
+            API_URL: api_ip
+        ports:
+            - 8080:8080
+        depends_on: 
+            - mongodb_container
+        networks:
+            - yolotron
 volumes:
     mongodb_data_container:
 
